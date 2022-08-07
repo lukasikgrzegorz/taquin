@@ -25,51 +25,46 @@ function cellStartPosition() {
 
 cellStartPosition();
 
-function updateCounter() {
-    moveCounter++;
-    document.getElementById("moveCounter-container").innerHTML = "move:"+moveCounter;
-}
-
 function move(a) {
-    if (gameArea[a + 4] == 16) {
+    if (gameActive > 0) {
+        
+        if (gameArea[a + 4] == 16) {
         gameArea[a + 4] = gameArea[a];
         gameArea[a] = 16;
         document.getElementById(a+1+4).classList.remove("empty");
         document.getElementById(a+1).classList.add("empty");
         cellPositionUpdate();
-        updateCounter();
         checkWin();
-    }
+        }
 
-    if (gameArea[a - 4] == 16) {
+        if (gameArea[a - 4] == 16) {
         gameArea[a - 4] = gameArea[a];
         gameArea[a] = 16;
         document.getElementById(a+1-4).classList.remove("empty");
         document.getElementById(a+1).classList.add("empty");
         cellPositionUpdate();
-        updateCounter();
         checkWin();
-    }
+        }
 
-    if (gameArea[a + 1] == 16 && (a+1)%4!=0) {
+        if (gameArea[a + 1] == 16 && (a+1)%4!=0) {
         gameArea[a + 1] = gameArea[a];
         gameArea[a] = 16;
         document.getElementById(a+1+1).classList.remove("empty");
         document.getElementById(a+1).classList.add("empty");
         cellPositionUpdate();
-        updateCounter();
         checkWin();
-    }
+        }
 
-    if (gameArea[a - 1] == 16 &&(a+1)%4!=1) {
+        if (gameArea[a - 1] == 16 &&(a+1)%4!=1) {
         gameArea[a - 1] = gameArea[a];
         gameArea[a] = 16;
         document.getElementById(a+1-1).classList.remove("empty");
         document.getElementById(a+1).classList.add("empty");
         cellPositionUpdate();
-        updateCounter();
         checkWin();
+        }
     }
+
 
 }
 
@@ -96,25 +91,28 @@ function randomSorting() {
         moveAI();
         i++
     } while (i < max);
-    moveCounter = 0;
-    document.getElementById("moveCounter-container").innerHTML = "move: " + moveCounter;
+    gameActive = 2;
 }
 
 function startGame() {
+    gameActive = 1;
     randomSorting();
     document.getElementById("menu").style.display = "none";
-    document.getElementById("hiscore").style.display = "flex";
+    document.getElementById("hiscore").style.display = "flex";    
 }
 
 function checkWin() {
-    let winCounter = 0;
-    for (i = 0; i < gameArea.length; i++){
-        if (gameArea[i] == i + 1) { winCounter++ };
+    if (gameActive == 2) {
+         winCounter = 0;
+        for (i = 0; i < gameArea.length; i++){
+            if (gameArea[i] == i + 1) { winCounter++ };
+        }
+        if (winCounter == 16) {
+            document.getElementById("hiscore").innerHTML = "you win!<br>game will be restarted";
+            setTimeout(function(){document. location. reload()},6000);
+        }
     }
-    if (winCounter == 16) {
-        document.getElementById("hiscore").innerHTML = "you win!<br>game will be restarted";
-        setTimeout(function(){document. location. reload()},6000);
-    }
+   
     
 }
 
